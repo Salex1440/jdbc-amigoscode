@@ -35,13 +35,23 @@ public class MovieDataAccessService implements MovieDao {
 
     @Override
     public int deleteMovie(int id) {
-        throw new UnsupportedOperationException("not implemented");
-
+        String sql = """
+                DELETE FROM movie
+                WHERE id = ?;
+                """;
+        return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public Optional<Movie> selectMovieById(int id) {
-        throw new UnsupportedOperationException("not implemented");
+        String sql = """
+                SELECT id, name, release_date 
+                FROM movie
+                WHERE id = ?;
+                """;
+        return jdbcTemplate.query(sql, new MovieRowMapper(), id)
+                .stream()
+                .findFirst();
     }
 
 }
